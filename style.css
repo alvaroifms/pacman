@@ -1,0 +1,63 @@
+body{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container{
+     width: 420px;
+    height: 460px;
+    border: 2px solid black;
+    background-color: black;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(21, 1fr);
+}
+
+.chao, .parede{
+    width: 20px;
+    height: 20px;
+}
+
+.chao{
+    background-color: black;
+}
+
+.parede{
+    background-color: black;
+    box-sizing: border-box;
+    
+}
+
+.topo{
+    border-top: 3px solid #00f;
+}
+.baixo{
+    border-bottom: 3px solid #00f;
+}
+.esquerda{
+    border-left: 3px solid #00f;
+}
+.direita{
+    border-right: 3px solid #00f;
+}
+
+.topo.esquerda{
+    border-top-left-radius: 10px;
+}
+.topo.direita{
+    border-top-right-radius: 10px;
+}
+.baixo.esquerda{
+    border-bottom-left-radius: 10px;
+}
+.baixo.direita{
+    border-bottom-right-radius: 10px;
+}
+
+.player{
+    background-color: yellow;
+    border-radius: 50%;
+}
