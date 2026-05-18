@@ -25,6 +25,9 @@ const mapa = [
   { linha: [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2] }
 ];
 
+let direcaoAtual = null;
+let loopJogo = null;
+
 
 function render() {
   container.innerHTML = '';
@@ -83,37 +86,74 @@ let player = {
 };
 
 render();
-let contador = 0
-document.addEventListener('keydown', (e) => {
-      let novox = player.x;
-      let novoy = player.y;
+let contador = 0;
+
+document.addEventListener("keydown", (e) => {
+  switch(e.key) {
+        case "ArrowUp": 
+          direcaoAtual = "cima";
+        break;
+        case "ArrowDown": 
+          direcaoAtual = "baixo";
+        break;
+        case "ArrowLeft": 
+          direcaoAtual = "esquerda";
+        break;
+        case "ArrowRight": 
+          direcaoAtual = "direita";
+        break;
+        default: return;
+      }
+  
+      if (!loopJogo) {
+        loopJogo = setInterval(atualizarMovimento, 150);
+      }
+});
+
+function atualizarMovimento() {
+      let novoX = player.x;
+      let novoY = player.y;
      const score = document.querySelector('#score');
 
-    if (e.key == 'ArrowUp') novoy--;
-    if (e.key == 'ArrowDown') novoy++;
-    if (e.key == 'ArrowLeft') novox--;
-    if (e.key == 'ArrowRight') novox++;
+    switch (direcaoAtual) {
+      case "cima":
+        novoY--;
+        break;
+      case "baixo":
+        novoY++;
+        break;
+      case "esquerda":
+        novoX--;
+        break;
+      case "direita":
+        novoX++;
+        break;
+    }
 
-    const destino = mapa[novoy]?.linha[novox];
+    const destino = mapa[novoY]?.linha[novoX];
 
-    if (destino === 2) return;
+    if (destino === undefined || destino === 2) {
+      clearInterval(loopJogo);
+      loopJogo = null;
+      direcaoAtual = null;
+      return;
+    };
 
     if (destino === 0) {
-        if (novox < player.x) {
-            novox = mapa[0].linha.length - 2;
+        if (novoX < player.x) {
+            novoX = mapa[0].linha.length - 2;
         } else {
-            novox = 1;
+            novoX = 1;
         }
     }
 
-if (mapa[player.y].linha[player.x] === 1) {
-    mapa[player.y].linha[player.x] = 3;
-    contador++;
-    score.textContent = `Pontos: ${contador}`;  
-}
+if (mapa[novoY].linha[novoX] === 1) {
+        mapa[novoY].linha[novoX] = 3;
+        contador++;
+        if (score) score.textContent = `Pontos: ${contador}`;  
+    }
 
-    player.x = novox;
-    player.y = novoy;
-
+    player.x = novoX;
+    player.y = novoY;
     render();
-});
+};
