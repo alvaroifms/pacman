@@ -8,12 +8,12 @@ const mapa = [
   { linha: [2,1,2,2,2,1,2,1,2,2,2,2,2,1,2,1,2,2,2,1,2] },
   { linha: [2,1,1,1,1,1,2,1,1,1,2,1,1,1,2,1,1,1,1,1,2] },
   { linha: [2,2,2,2,2,1,2,2,2,1,2,1,2,2,2,1,2,2,2,2,2] },
-  { linha: [1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1] },
+  { linha: [2,2,2,2,2,1,2,1,1,1,1,1,1,1,2,1,2,2,2,2,2] },
   { linha: [2,2,2,2,2,1,2,1,2,2,1,2,2,1,2,1,2,2,2,2,2] },
   { linha: [0,1,1,1,1,1,1,1,2,1,1,1,2,1,1,1,1,1,1,1,0] },
   { linha: [2,2,2,2,2,1,2,1,2,1,1,1,2,1,2,1,2,2,2,2,2] },
-  { linha: [1,1,1,1,2,1,2,1,2,2,2,2,2,1,2,1,2,1,1,1,1] },
-  { linha: [1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1] },
+  { linha: [2,2,2,2,2,1,2,1,2,2,2,2,2,1,2,1,2,2,2,2,2] },
+  { linha: [2,2,2,2,2,1,2,1,1,1,1,1,1,1,2,1,2,2,2,2,2] },
   { linha: [2,2,2,2,2,1,1,1,2,2,2,2,2,1,1,1,2,2,2,2,2] },
   { linha: [2,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2] },
   { linha: [2,1,2,2,2,1,2,2,2,1,2,1,2,2,2,1,2,2,2,1,2] },
@@ -49,14 +49,25 @@ function render() {
         if (esquerda !== 2) quad.classList.add('esquerda');
         if (direita !== 2) quad.classList.add('direita');
 
-      } else {
-        quad.classList.add('chao');
       }
+
 
 
       if (player.x === j && player.y === i) {
         quad.classList.add('player');
       }
+
+       
+      if (atual === 1 && !(player.x === j && player.y === i)) {
+      const ponto = document.createElement('div');
+      ponto.classList.add('ponto');
+      quad.classList.add(`chao`)
+      quad.append(ponto);
+    } else if (atual === 3) {
+    quad.classList.add('chao');
+}
+
+
 
       container.append(quad);
     }
@@ -72,10 +83,11 @@ let player = {
 };
 
 render();
-
+let contador = 0
 document.addEventListener('keydown', (e) => {
       let novox = player.x;
-    let novoy = player.y;
+      let novoy = player.y;
+     const score = document.querySelector('#score');
 
     if (e.key == 'ArrowUp') novoy--;
     if (e.key == 'ArrowDown') novoy++;
@@ -94,8 +106,14 @@ document.addEventListener('keydown', (e) => {
         }
     }
 
+if (mapa[player.y].linha[player.x] === 1) {
+    mapa[player.y].linha[player.x] = 3;
+    contador++;
+    score.textContent = `Pontos: ${contador}`;  
+}
+
     player.x = novox;
     player.y = novoy;
 
-    render();;
+    render();
 });
